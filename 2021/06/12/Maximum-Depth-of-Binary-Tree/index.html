@@ -12,7 +12,7 @@
 
 
 
-<title>Length_of_Last_Word | 星辰大海</title>
+<title>Maximum_Depth_of_Binary_Tree | 星辰大海</title>
 
 
 
@@ -173,7 +173,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Length_of_Last_Word</h1>
+            <h1 class="post-title">Maximum_Depth_of_Binary_Tree</h1>
             
                 <div class="post-meta">
                     
@@ -182,7 +182,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">May 23, 2021&nbsp;&nbsp;21:57:04</a>
+                        Date: <a href="#">June 12, 2021&nbsp;&nbsp;15:08:29</a>
                         </span>
                     
                     
@@ -198,37 +198,30 @@
         </header>
 
         <div class="post-content">
-            <h4 id="58-最后一个单词的长度"><a href="#58-最后一个单词的长度" class="headerlink" title="58. 最后一个单词的长度"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/length-of-last-word/">58. 最后一个单词的长度</a></h4><p>给你一个字符串 <code>s</code>，由若干单词组成，单词之间用空格隔开。返回字符串中最后一个单词的长度。如果不存在最后一个单词，请返回 0 。</p>
-<p><strong>单词</strong> 是指仅由字母组成、不包含任何空格字符的最大子字符串。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;Hello World&quot;</span><br><span class="line">输出：5</span><br></pre></td></tr></table></figure>
+            <h4 id="104-二叉树的最大深度"><a href="#104-二叉树的最大深度" class="headerlink" title="104. 二叉树的最大深度"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/">104. 二叉树的最大深度</a></h4><p>给定一个二叉树，找出其最大深度。</p>
+<p>二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。</p>
+<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
+<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><p>给定二叉树 <code>[3,9,20,null,null,15,7]</code>，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
 
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot; &quot;</span><br><span class="line">输出：0</span><br></pre></td></tr></table></figure>
-
-<p><strong>提示：</strong></p>
-<ul>
-<li><code>1 &lt;= s.length &lt;= 104</code></li>
-<li><code>s</code> 仅有英文字母和空格 <code>&#39; &#39;</code> 组成</li>
+<p>返回它的最大深度 3 。</p>
+<h4 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h4><ul>
+<li>DFS</li>
 </ul>
-<p><strong>代码实现：</strong></p>
-<ul>
-<li>方法一：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLastWord</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        s = s.trim();</span><br><span class="line">        <span class="keyword">if</span> (s.equals(<span class="string">&quot; &quot;</span>))<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        String[] ss = s.split(<span class="string">&quot;\\s+&quot;</span>);</span><br><span class="line">        <span class="keyword">int</span> i = ss.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> ss[i].length();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>执行用时：5 ms, 在所有 Java 提交中击败了5.82%的用户</p>
-<p>内存消耗：37.1 MB, 在所有 Java 提交中击败了12.48%的用户</p>
-</blockquote>
-<ul>
-<li>方法二：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLastWord</span><span class="params">(String s)</span> </span>&#123; </span><br><span class="line">        s = s.trim();</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = s.length() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.charAt(i) != <span class="string">&#x27; &#x27;</span>) cnt++;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> maxLevel = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxDepth</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> level = <span class="number">1</span>;</span><br><span class="line">        DFS(root, level);</span><br><span class="line">        <span class="keyword">return</span> maxLevel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DFS</span><span class="params">(TreeNode root, <span class="keyword">int</span> level)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">        DFS(root.left, level + <span class="number">1</span>);</span><br><span class="line">        DFS(root.right, level + <span class="number">1</span>);</span><br><span class="line">        maxLevel = Math.max(maxLevel, level);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户</p>
-<p>内存消耗：36.5 MB, 在所有 Java 提交中击败了90.33%的用户</p>
+<p>内存消耗：38.3 MB, 在所有 Java 提交中击败了64.23%的用户</p>
+</blockquote>
+<ul>
+<li>层序遍历</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxDepth</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> level = <span class="number">0</span>;</span><br><span class="line">        Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        queue.offer(root);</span><br><span class="line">        <span class="keyword">while</span> (!queue.isEmpty()) &#123;</span><br><span class="line">            level++;</span><br><span class="line">            <span class="keyword">int</span> len = queue.size();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; ++i) &#123;</span><br><span class="line">                TreeNode t = queue.poll();</span><br><span class="line">                <span class="keyword">if</span> (t.left != <span class="keyword">null</span>) queue.offer(t.left);</span><br><span class="line">                <span class="keyword">if</span> (t.right != <span class="keyword">null</span>) queue.offer(t.right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> level;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行用时：1 ms, 在所有 Java 提交中击败了16.85%的用户</p>
+<p>内存消耗：38 MB, 在所有 Java 提交中击败了95.85%的用户</p>
 </blockquote>
 
         </div>
@@ -263,7 +256,11 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/"># 字符串</a>
+                        <a href="/tags/%E6%A0%91/"># 树</a>
+                    
+                        <a href="/tags/%E9%80%92%E5%BD%92/"># 递归</a>
+                    
+                        <a href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/"># 深度优先搜索</a>
                     
                         
                 </span>
@@ -276,10 +273,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/05/24/Plus-One/">Plus_One</a>
             
-            
-            <a class="next" rel="next" href="/2021/05/22/1007-Maximum-Subsequence-Sum/">1007_Maximum_Subsequence_Sum</a>
+            <a class="next" rel="next" href="/2021/06/12/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/">第一章 计算机系统概述</a>
             
         </section>
 
