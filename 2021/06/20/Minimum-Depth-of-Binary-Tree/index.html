@@ -213,7 +213,7 @@
 <h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ul>
 <li>广度优先搜索</li>
 </ul>
-<p>没到一层记录该层号，如果这层出现了无孩子的节点，那就说明到了最短层级</p>
+<p>每到一层记录该层号，如果这层出现了无孩子的节点，那就说明到了最短层级</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">minDepth</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        Queue&lt;TreeNode&gt; q = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        q.offer(root);</span><br><span class="line">        <span class="keyword">int</span> level = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (!q.isEmpty()) &#123;</span><br><span class="line">            level++;</span><br><span class="line">            <span class="keyword">int</span> len = q.size();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; ++i) &#123;</span><br><span class="line">                TreeNode t = q.poll();</span><br><span class="line">                <span class="keyword">if</span> (t.left == <span class="keyword">null</span> &amp;&amp; t.right == <span class="keyword">null</span>) <span class="keyword">return</span> level;</span><br><span class="line">                <span class="keyword">if</span> (t.left != <span class="keyword">null</span>) q.offer(t.left);</span><br><span class="line">                <span class="keyword">if</span> (t.right != <span class="keyword">null</span>) q.offer(t.right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> level;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -279,6 +279,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/06/21/Path-Sum/">Path_Sum</a>
             
             
             <a class="next" rel="next" href="/2021/06/18/1020-Tree-Traversals/">1020_Tree_Traversals</a>
