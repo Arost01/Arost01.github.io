@@ -12,7 +12,7 @@
 
 
 
-<title>Pascal_Triangle_II | 星辰大海</title>
+<title>Best_Time_to_Buy_and_Sell_Stock | 星辰大海</title>
 
 
 
@@ -173,7 +173,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Pascal_Triangle_II</h1>
+            <h1 class="post-title">Best_Time_to_Buy_and_Sell_Stock</h1>
             
                 <div class="post-meta">
                     
@@ -182,7 +182,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">June 26, 2021&nbsp;&nbsp;9:22:29</a>
+                        Date: <a href="#">June 30, 2021&nbsp;&nbsp;14:35:55</a>
                         </span>
                     
                     
@@ -198,21 +198,31 @@
         </header>
 
         <div class="post-content">
-            <hr>
-<p>title: Pascal_Triangle_II<br>math: false<br>date: 2021-06-26 09:16:33<br>categories: LeetCode<br>tags: </p>
-<ul>
-<li>数组</li>
-<li>动态规划</li>
-</ul>
-<hr>
-<h4 id="119-杨辉三角-II"><a href="#119-杨辉三角-II" class="headerlink" title="119. 杨辉三角 II"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/pascals-triangle-ii/">119. 杨辉三角 II</a></h4><p>给定一个非负索引 <em>k</em>，其中 <em>k</em> ≤ 33，返回杨辉三角的第 <em>k</em> 行。</p>
-<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1grvep6mk67g307806o3z0.gif" alt="img"></p>
-<p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例:"></a>示例:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 3</span><br><span class="line">输出: [1,3,3,1]</span><br></pre></td></tr></table></figure>
+            <h4 id="121-买卖股票的最佳时机"><a href="#121-买卖股票的最佳时机" class="headerlink" title="121. 买卖股票的最佳时机"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/">121. 买卖股票的最佳时机</a></h4><p>给定一个数组 <code>prices</code> ，它的第 <code>i</code> 个元素 <code>prices[i]</code> 表示一支给定股票第 <code>i</code> 天的价格。</p>
+<p>你只能选择 <strong>某一天</strong> 买入这只股票，并选择在 <strong>未来的某一个不同的日子</strong> 卖出该股票。设计一个算法来计算你所能获取的最大利润。</p>
+<p>返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 <code>0</code> 。</p>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a>示例 1：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：[7,1,5,3,6,4]</span><br><span class="line">输出：5</span><br><span class="line">解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。</span><br><span class="line">     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。</span><br></pre></td></tr></table></figure>
 
-<h4 id="进阶："><a href="#进阶：" class="headerlink" title="进阶："></a>进阶：</h4><p>你可以优化你的算法到 <em>O</em>(<em>k</em>) 空间复杂度吗？</p>
-<h4 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h4><p>滚动数组优化空间复杂度</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">getRow</span><span class="params">(<span class="keyword">int</span> rowIndex)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; prelist = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= rowIndex; ++i) &#123;</span><br><span class="line">            List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= i; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (j == <span class="number">0</span> || j == i) list.add(<span class="number">1</span>);</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">int</span> a = prelist.get(j - <span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">int</span> b = prelist.get(j);</span><br><span class="line">                    list.add(a + b);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            prelist = list;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> prelist;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a>示例 2：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：prices = [7,6,4,3,1]</span><br><span class="line">输出：0</span><br><span class="line">解释：在这种情况下, 没有交易完成, 所以最大利润为 0。</span><br></pre></td></tr></table></figure>
+
+<h4 id="提示："><a href="#提示：" class="headerlink" title="提示："></a>提示：</h4><ul>
+<li><code>1 &lt;= prices.length &lt;= 105</code></li>
+<li><code>0 &lt;= prices[i] &lt;= 104</code></li>
+</ul>
+<h4 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h4><p>这里没有使用dp[]的形式，只需要在求当前dp时做个比较留下最佳的即可，优化了空间复杂度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> dp = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> min = Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; prices.length; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (prices[i] &lt;= min) &#123;</span><br><span class="line">                min = prices[i];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                dp = Math.max(prices[i] - min, dp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行用时：2 ms, 在所有 Java 提交中击败了99.05%的用户</p>
+<p>内存消耗：51.2 MB, 在所有 Java 提交中击败了82.93%的用户</p>
+</blockquote>
+<blockquote>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：O(n)<em>O</em>(<em>n</em>)，只需要遍历一次。</li>
+<li>空间复杂度：O(1)<em>O</em>(1)，只使用了常数个变量。</li>
+</ul>
+</blockquote>
 
         </div>
 
@@ -261,10 +271,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/06/30/Best-Time-to-Buy-and-Sell-Stock/">Best_Time_to_Buy_and_Sell_Stock</a>
             
-            
-            <a class="next" rel="next" href="/2021/06/25/Pascal-Triangle/">Pascal_Triangle</a>
+            <a class="next" rel="next" href="/2021/06/26/Pascal-Triangle-II/">Pascal_Triangle_II</a>
             
         </section>
 
