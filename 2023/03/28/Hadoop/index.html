@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="不久之">
+
+
+
+
+
+<title>Hadoop | 星辰大海</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">bujiuzhi&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">bujiuzhi&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Hadoop</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">不久之</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 28, 2023&nbsp;&nbsp;1:43:06</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h1><h2 id="Hadoop和Hadoop生态系统"><a href="#Hadoop和Hadoop生态系统" class="headerlink" title="Hadoop和Hadoop生态系统"></a>Hadoop和Hadoop生态系统</h2><h3 id="Hadoop生态系统"><a href="#Hadoop生态系统" class="headerlink" title="Hadoop生态系统"></a>Hadoop生态系统</h3><p>广义上来说，Hadoop通常是指一个更广泛的概念。</p>
+<ul>
+<li><p>  <strong>Zookeeper</strong>：是一个开源的分布式应用程序协调服务,基于zookeeper可以实现同步服务，配置维护，命名服务。</p>
+</li>
+<li><p>  <strong>Flume</strong>：一个高可用的，高可靠的，分布式的海量日志采集、聚合和传输的系统。</p>
+</li>
+<li><p>  <strong>Hbase</strong>：是一个分布式的、面向列的开源数据库, 利用Hadoop HDFS作为其存储系统。</p>
+</li>
+<li><p>  <strong>Hive</strong>：基于Hadoop的一个数据仓库工具，可以将结构化的数据档映射为一张数据库表，并提供简单的sql 查询功能，可以将sql语句转换为MapReduce任务进行运行。</p>
+</li>
+<li><p>  <strong>Sqoop</strong>：将一个关系型数据库中的数据导进到Hadoop的 HDFS中，也可以将HDFS的数据导进到关系型数据库中。</p>
+</li>
+</ul>
+<h3 id="Hadoop-1"><a href="#Hadoop-1" class="headerlink" title="Hadoop"></a>Hadoop</h3><p>狭义上说，Hadoop指Apache这款开源框架，它的核心组件有：</p>
+<ul>
+<li><p><strong>HDFS（分布式文件系统）</strong>：解决海量数据存储</p>
+</li>
+<li><p><strong>YARN（作业调度和集群资源管理的框架）</strong>：解决资源任务调度</p>
+</li>
+<li><p><strong>MAPREDUCE（分布式运算编程框架）</strong>：解决海量数据计算</p>
+</li>
+</ul>
+<h2 id="Hadoop的特性优点"><a href="#Hadoop的特性优点" class="headerlink" title="Hadoop的特性优点"></a>Hadoop的特性优点</h2><ul>
+<li>扩容能力（Scalable）：Hadoop是在可用的计算机集群间分配数据并完成计算任务的，这些集群可用方便的扩展到数以千计的节点中。</li>
+<li>成本低（Economical）：Hadoop通过普通廉价的机器组成服务器集群来分发以及处理数据，以至于成本很低。</li>
+<li>高效率（Efficient）：通过并发数据，Hadoop可以在节点之间动态并行的移动数据，使得速度非常快。</li>
+<li>可靠性（Rellable）：能自动维护数据的多份复制，并且在任务失败后能自动地重新部署（redeploy）计算任务。所以Hadoop的按位存储和处理数据的能力值得人们信赖。</li>
+</ul>
+<h2 id="Hadoop的运行模式"><a href="#Hadoop的运行模式" class="headerlink" title="Hadoop的运行模式"></a>Hadoop的运行模式</h2><p>单机版、伪分布式模式、完全分布式模式</p>
+<h2 id="Hadoop集群启动节点"><a href="#Hadoop集群启动节点" class="headerlink" title="Hadoop集群启动节点"></a>Hadoop集群启动节点</h2><ul>
+<li><strong>namenode</strong>：HDFS的守护进程，负责维护整个文件系统，存储着整个文件系统的元数据信息，image+edit log </li>
+<li><strong>datanode</strong>：是具体文件系统的工作节点，当我们需要某个数据，namenode告诉我们去哪里找，就直接和那个DataNode对应的服务器的后台进程进行通信，由DataNode进行数据的检索，然后进行具体的读&#x2F;写操作</li>
+<li><strong>secondarynamenode</strong>：它不是namenode的冗余守护进程，而是提供周期检查点和清理任务。帮助NN合并image和editslog，减少NN启动时间。</li>
+<li><strong>resourcemanager</strong>：是yarn平台的守护进程，负责所有资源的分配与调度，client的请求由此负责，监控nodemanager</li>
+<li><strong>nodemanager</strong>：是单个节点的资源管理，执行来自resourcemanager的具体任务和命令</li>
+<li><strong>DFSZKFailoverController</strong>：高可用时它负责监控NN的状态，并及时的把状态信息写入ZK。它通过一个独立线程周期性的调用NN上的一个特定接口来获取NN的健康状态。FC也有选择谁作为Active NN的权利，因为最多只有两个节点，目前选择策略还比较简单（先到先得，轮换）。</li>
+<li><strong>JournalNode</strong>：高可用情况下存放namenode的editlog文件</li>
+</ul>
+<h2 id="主要配置文件"><a href="#主要配置文件" class="headerlink" title="主要配置文件"></a>主要配置文件</h2><ul>
+<li><p>hadoop-env.sh</p>
+<ul>
+<li>文件中设置的是Hadoop运行时需要的环境变量。JAVA_HOME是必须设置的，即使我们当前的系统中设置了JAVA_HOME，它也是不认识的，因为Hadoop即使是在本机上执行，它也是把当前的执行环境当成远程服务器。</li>
+</ul>
+</li>
+<li><p>core-site.xml</p>
+<ul>
+<li><p>设置Hadoop的文件系统地址</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://node-1:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>hdfs-site.xml</p>
+<ul>
+<li><p>指定HDFS副本的数量</p>
+</li>
+<li><p>secondary namenode 所在主机的ip和端口</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">value</span>&gt;</span>2<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"> 		 <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.secondary.http-address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  		 <span class="tag">&lt;<span class="name">value</span>&gt;</span>node-2:50090<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>mapred-site.xml</p>
+<ul>
+<li><p>指定mr运行时框架，这里指定在yarn上，默认是local</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>yarn-site.xml</p>
+<ul>
+<li><p>指定YARN的主角色（ResourceManager）的地址</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.hostname<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">value</span>&gt;</span>node-1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="重要命令"><a href="#重要命令" class="headerlink" title="重要命令"></a>重要命令</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化</span></span><br><span class="line">hadoop namenode –format</span><br><span class="line"></span><br><span class="line"><span class="comment">//启动dfs</span></span><br><span class="line">start-dfs.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">//启动yarn</span></span><br><span class="line">start-yarn.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">//启动任务历史服务器</span></span><br><span class="line">mr-jobhistory-daemon.sh start historyserver</span><br><span class="line"></span><br><span class="line"><span class="comment">//一键启动</span></span><br><span class="line">start-all.sh</span><br></pre></td></tr></table></figure>
+
+<p>启动成功后：</p>
+<p>NameNode的web 访问端口:50070.</p>
+<p>ResourceManager的web 访问端口:8088</p>
+<p>历史服务器 的web 访问端口：19888</p>
+<table>
+<thead>
+<tr>
+<th>选项名称</th>
+<th>使用格式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-ls</td>
+<td><code>-ls &lt;路径&gt;</code></td>
+<td>查看指定路径的当前目录结构</td>
+</tr>
+<tr>
+<td>-lsr</td>
+<td><code>-lsr &lt;路径&gt;</code></td>
+<td>递归查看指定路径的目录结构</td>
+</tr>
+<tr>
+<td>-du</td>
+<td><code>-du &lt;路径&gt;</code></td>
+<td>统计目录下个文件大小</td>
+</tr>
+<tr>
+<td>-dus</td>
+<td><code>-dus &lt;路径&gt;</code></td>
+<td>汇总统计目录下文件(夹)大小</td>
+</tr>
+<tr>
+<td>-count</td>
+<td><code>-count [-q] &lt;路径&gt;</code></td>
+<td>统计文件(夹)数量</td>
+</tr>
+<tr>
+<td>-mv</td>
+<td><code>-mv &lt;源路径&gt; &lt;目的路径&gt;</code></td>
+<td>移动</td>
+</tr>
+<tr>
+<td>-cp</td>
+<td><code>-cp &lt;源路径&gt; &lt;目的路径&gt;</code></td>
+<td>复制</td>
+</tr>
+<tr>
+<td>-rm</td>
+<td><code>-rm [-skipTrash] &lt;路径&gt;</code></td>
+<td>删除文件&#x2F;空白文件夹</td>
+</tr>
+<tr>
+<td>-rmr</td>
+<td><code>-rmr [-skipTrash] &lt;路径&gt;</code></td>
+<td>递归删除</td>
+</tr>
+<tr>
+<td>-put</td>
+<td><code>-put &lt;多个linux上的文件&gt; &lt;hdfs路径&gt;</code></td>
+<td>上传文件</td>
+</tr>
+<tr>
+<td>-copyFromLocal</td>
+<td><code>-copyFromLocal &lt;多个linux上的文件&gt; &lt;hdfs路径&gt;</code></td>
+<td>从本地复制</td>
+</tr>
+<tr>
+<td>-moveFromLocal</td>
+<td><code>-moveFromLocal &lt;多个linux上的文件&gt; &lt;hdfs路径&gt;</code></td>
+<td>从本地移动</td>
+</tr>
+<tr>
+<td>-getmerge</td>
+<td><code>-getmerge &lt;源路径&gt; &lt;linux路径&gt;</code></td>
+<td>合并到本地</td>
+</tr>
+<tr>
+<td>-cat</td>
+<td><code>-cat &lt;hdfs路径&gt;</code></td>
+<td>查看文件内容</td>
+</tr>
+<tr>
+<td>-text</td>
+<td><code>-text &lt;hdfs路径&gt;</code></td>
+<td>查看文件内容</td>
+</tr>
+<tr>
+<td>-copyToLocal</td>
+<td><code>-copyToLocal [-ignoreCrc] [-crc] [hdfs源路径] [linux目的路径]</code></td>
+<td>从本地复制</td>
+</tr>
+<tr>
+<td>-moveToLocal</td>
+<td><code>-moveToLocal [-crc] &lt;hdfs源路径&gt; &lt;linux目的路径&gt;</code></td>
+<td>从本地移动</td>
+</tr>
+<tr>
+<td>-mkdir</td>
+<td><code>-mkdir &lt;hdfs路径&gt;</code></td>
+<td>创建空白文件夹</td>
+</tr>
+<tr>
+<td>-setrep</td>
+<td><code>-setrep [-R] [-w] &lt;副本数&gt; &lt;路径&gt;</code></td>
+<td>修改副本数量</td>
+</tr>
+<tr>
+<td>-touchz</td>
+<td><code>-touchz &lt;文件路径&gt;</code></td>
+<td>创建空白文件</td>
+</tr>
+<tr>
+<td>-stat</td>
+<td><code>-stat [format] &lt;路径&gt;</code></td>
+<td>显示文件统计信息</td>
+</tr>
+<tr>
+<td>-tail</td>
+<td><code>-tail [-f] &lt;文件&gt;</code></td>
+<td>查看文件尾部信息</td>
+</tr>
+<tr>
+<td>-chmod</td>
+<td><code>-chmod [-R] &lt;权限模式&gt; [路径]</code></td>
+<td>修改权限</td>
+</tr>
+<tr>
+<td>-chown</td>
+<td><code>-chown [-R] [属主][:[属组]] 路径</code></td>
+<td>修改属主</td>
+</tr>
+<tr>
+<td>-chgrp</td>
+<td><code>-chgrp [-R] 属组名称 路径</code></td>
+<td>修改属组</td>
+</tr>
+<tr>
+<td>-help</td>
+<td><code>-help [命令选项]</code></td>
+<td>帮助</td>
+</tr>
+</tbody></table>
+<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2><h3 id="HDFS的组成架构"><a href="#HDFS的组成架构" class="headerlink" title="HDFS的组成架构"></a>HDFS的组成架构</h3><img src="https://s2.loli.net/2023/03/26/iFqK32fgIEHmSar.png" alt="HDFS架构" style="zoom: 50%;" />
+
+<ul>
+<li><strong>Client</strong>：就是客户端。<br>（1）文件切分。文件上传HDFS的时候，Client将文件切分成一个一个的Block，然后进行存储；<br>  （2）与NameNode交互，获取文件的位置信息；<br>  （3）与DataNode交互，读取或者写入数据；<br>  （4）Client提供一些命令来管理HDFS，比如启动或者关闭HDFS；<br>  （5）Client可以通过一些命令来访问HDFS；</li>
+<li><strong>NameNode</strong>：就是Master，它是一个主管、管理者。<br>（1）管理HDFS的名称空间；<br>  （2）管理数据块（Block）映射信息；<br>  （3）配置副本策略；<br>  （4）处理客户端读写请求。</li>
+<li><strong>DataNode</strong>：就是Slave。NameNode下达命令，DataNode执行实际的操作。<br>（1）存储实际的数据块；<br>  （2）执行数据块的读&#x2F;写操作。</li>
+<li><strong>SecondaryNameNode</strong>：并非NameNode的热备。当NameNode挂掉的时候，它并不能马上替换NameNode并提供服务。<br>（1）辅助NameNode，分担其工作量；<br>  （2）定期合并Fsimage和Edits，并推送给NameNode；<br>  （3）在紧急情况下，可辅助恢复NameNode。</li>
+</ul>
+<h3 id="HDFS写数据流程"><a href="#HDFS写数据流程" class="headerlink" title="HDFS写数据流程"></a>HDFS写数据流程</h3><p>HDFS dfs -put a.txt &#x2F;</p>
+<p><img src="https://s2.loli.net/2023/03/26/4n2sXymKdZGYDwu.png" alt="HDFS写数据流程"></p>
+<p>详细步骤：</p>
+<ol>
+<li>客户端通过Distributed FileSystem模块向namenode请求上传文件，namenode检查目标文件是否已存在，父目录是否存在。</li>
+<li>namenode返回是否可以上传。</li>
+<li>客户端请求第一个 block上传到哪几个datanode服务器上。</li>
+<li>namenode返回3个datanode节点，分别为dn1、dn2、dn3。</li>
+<li>客户端通过FSDataOutputStream模块请求dn1上传数据，dn1收到请求会继续调用dn2，然后dn2调用dn3，将这个通信管道建立完成。</li>
+<li>dn1、dn2、dn3逐级应答客户端。</li>
+<li>客户端开始往dn1上传第一个block（先从磁盘读取数据放到一个本地内存缓存），以packet为单位（大小为64k），dn1收到一个packet就会传给dn2，dn2传给dn3；dn1每传一个packet会放入一个应答队列等待应答。</li>
+<li>当一个block传输完成之后，客户端再次请求namenode上传第二个block的服务器。（重复执行3-7步）。</li>
+</ol>
+<h3 id="HDFS读数据流程"><a href="#HDFS读数据流程" class="headerlink" title="HDFS读数据流程"></a>HDFS读数据流程</h3><p><img src="https://s2.loli.net/2023/03/26/br8DXOlMwAcspPV.png" alt="HDFS读数据流程"></p>
+<p><strong>详细步骤</strong>：</p>
+<ol>
+<li>客户端通过Distributed FileSystem向namenode请求下载文件，namenode通过查询元数据，找到文件块所在的datanode地址。</li>
+<li>挑选一台datanode（就近原则，然后随机）服务器，请求读取数据。</li>
+<li>datanode开始传输数据给客户端（从磁盘里面读取数据输入流，以packet为单位来做校验,大小为64k）。</li>
+<li>客户端以packet为单位接收，先在本地缓存，然后写入目标文件。</li>
+</ol>
+<h3 id="SecondaryNameNode的作用"><a href="#SecondaryNameNode的作用" class="headerlink" title="SecondaryNameNode的作用"></a>SecondaryNameNode的作用</h3><p>合并NameNode的<strong>editslog</strong>和<strong>fsimage</strong></p>
+<img src="https://s2.loli.net/2023/03/26/LoXsONqRiDtWJcp.png" alt="SecondaryNameNode的作用" style="zoom:50%;" />
+
+
+
+<h3 id="NameNode与SecondaryNameNode"><a href="#NameNode与SecondaryNameNode" class="headerlink" title="NameNode与SecondaryNameNode"></a>NameNode与SecondaryNameNode</h3><h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><p>  （1）NameNode负责管理整个文件系统的元数据，以及每一个路径（文件）所对应的数据块信息。<br>  （2）SecondaryNameNode主要用于定期合并命名空间镜像和命名空间镜像的编辑日志。</p>
+<h4 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h4><p>  （1）SecondaryNameNode中保存了一份和namenode一致的镜像文件（fsimage）和编辑日志（edits）。<br>  （2）在主namenode发生故障时（假设没有及时备份数据），可以从SecondaryNameNode恢复数据。</p>
+<h3 id="HDFS的垃圾桶机制"><a href="#HDFS的垃圾桶机制" class="headerlink" title="HDFS的垃圾桶机制"></a>HDFS的垃圾桶机制</h3><p>修改core-site.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.trash.interval<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>1440<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注：这个时间以分钟为单位，例如1440&#x3D;24h&#x3D;1天。HDFS的垃圾回收的默认配置属性为 0，也就是说，如果你不小心误删除了某样东西，那么这个操作是不可恢复的。 </p>
+<h3 id="HANameNode工作原理"><a href="#HANameNode工作原理" class="headerlink" title="HANameNode工作原理"></a>HANameNode工作原理</h3><p><img src="https://s2.loli.net/2023/03/26/bSkpPK1ZcRW9sF4.png" alt="HANameNode的工作原理"></p>
+<p>ZKFailoverController主要职责</p>
+<ol>
+<li>健康监测：周期性的向它监控的NN发送健康探测命令，从而来确定某个NameNode是否处于健康状态，如果机器宕机，心跳失败，那么zkfc就会标记它处于一个不健康的状态。</li>
+<li>会话管理：如果NN是健康的，zkfc就会在zookeeper中保持一个打开的会话，如果NameNode同时还是Active状态的，那么zkfc还会在Zookeeper中占有一个类型为短暂类型的znode，当这个NN挂掉时，这个znode将会被删除，然后备用的NN，将会得到这把锁，升级为主NN，同时标记状态为Active。</li>
+<li>当宕机的NN新启动时，它会再次注册zookeper，发现已经有znode锁了，便会自动变为Standby状态，如此往复循环，保证高可靠，需要注意，目前仅仅支持最多配置2个NN。</li>
+<li>master选举：如上所述，通过在zookeeper中维持一个短暂类型的znode，来实现抢占式的锁机制，从而判断那个NameNode为Active状态</li>
+</ol>
+<p>注：同时出现两个Active状态Onamenode的术语叫脑裂brain split。</p>
+<p>防止脑裂的两种方式：</p>
+<ol>
+<li>ssh发送kill指令</li>
+<li>调用用户自定义脚本程序</li>
+</ol>
+<h3 id="HDFS中block"><a href="#HDFS中block" class="headerlink" title="HDFS中block"></a>HDFS中block</h3><p>默认保存3份</p>
+<p>老版本默认64m，2.x版本默认128m</p>
+<h3 id="HDFS安全模式"><a href="#HDFS安全模式" class="headerlink" title="HDFS安全模式"></a>HDFS安全模式</h3><p>文件系统<strong>只接受读</strong>数据请求，而不接受删除、修改等变更请求。</p>
+<p>在NameNode主节点启动时，HDFS首先进入安全模式，集群会开始检查数据块的完整性。DataNode在启动的时候会向namenode汇报可用的block信息，当整个系统达到安全标准时，HDFS自动离开安全模式。</p>
+<ul>
+<li><p>手动进入安全模式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfsadmin -safemode enter</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>手动离开安全模式</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfsadmin -safemode leave</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="机架感知"><a href="#机架感知" class="headerlink" title="机架感知"></a>机架感知</h3><p>hadoop自身是没有机架感知能力的，必须通过人为的设定来达到这个目的。</p>
+<p>通过配置一个脚本来进行映射；</p>
+<p>通过实现DNSToSwitchMapping接口的resolve()方法来完成网络位置的映射。</p>
+<p>1、写一个脚本，然后放到hadoop的core-site.xml配置文件中，用namenode和jobtracker进行调用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment">#-*-coding:UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">rack = &#123;<span class="string">&quot;hadoop-node-31&quot;</span>:<span class="string">&quot;rack1&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-32&quot;</span>:<span class="string">&quot;rack1&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-33&quot;</span>:<span class="string">&quot;rack1&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-34&quot;</span>:<span class="string">&quot;rack1&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-49&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-50&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-51&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-52&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-53&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;hadoop-node-54&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.31&quot;</span>:<span class="string">&quot;rack1&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.32&quot;</span>:<span class="string">&quot;rack1&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.33&quot;</span>:<span class="string">&quot;rack1&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.34&quot;</span>:<span class="string">&quot;rack1&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.49&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.50&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.51&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.52&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.53&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                <span class="string">&quot;192.168.1.54&quot;</span>:<span class="string">&quot;rack2&quot;</span>,</span><br><span class="line">                                &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;/&quot;</span> + rack.get(sys.argv[<span class="number">1</span>],<span class="string">&quot;rack0&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2、将脚本赋予可执行权限chmod +x RackAware.py，并放到bin&#x2F;目录下。</p>
+<p>3、然后打开conf&#x2F;core-site.html</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>topology.script.file.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>/opt/modules/hadoop/hadoop-1.0.3/bin/RackAware.py<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--机架感知脚本路径--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>topology.script.number.args<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>20<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--机架服务器数量，由于我写了20个，所以这里写20--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>4、重启Hadoop集群</p>
+<h3 id="HDFS的扩容、缩容"><a href="#HDFS的扩容、缩容" class="headerlink" title="HDFS的扩容、缩容"></a>HDFS的扩容、缩容</h3><h4 id="动态扩容"><a href="#动态扩容" class="headerlink" title="动态扩容"></a>动态扩容</h4><h5 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h5><p>修改新机器系统hostname（通过&#x2F;etc&#x2F;sysconfig&#x2F;network进行修改）</p>
+<p>修改hosts文件，将集群所有节点hosts配置进去（集群所有节点保持hosts文件统一）</p>
+<p>设置NameNode到DataNode的免密码登录（ssh-copy-id命令实现）</p>
+<p>修改主节点slaves文件，添加新增节点的ip信息（集群重启时配合一键启动脚本使用）</p>
+<p>在新的机器上上传解压一个新的hadoop安装包，从主节点机器上将hadoop的所有配置文件，scp到新的节点上。</p>
+<h5 id="添加datanode"><a href="#添加datanode" class="headerlink" title="添加datanode"></a>添加datanode</h5><ol>
+<li><p>在namenode所在的机器的&#x2F;export&#x2F;servers&#x2F;hadoop-2.6.0-cdh5.14.0&#x2F;etc&#x2F;hadoop目录下创建dfs.hosts文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd /export/servers/hadoop-2.6.0-cdh5.14.0/etc/hadoop</span><br><span class="line"></span><br><span class="line">vim dfs.hosts</span><br><span class="line"></span><br><span class="line">添加如下主机名称（包含新服役的节点）</span><br><span class="line"></span><br><span class="line">node-1</span><br><span class="line">node-2</span><br><span class="line">node-3</span><br><span class="line">node-4</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在namenode机器的hdfs-site.xml配置文件中增加dfs.hosts属性</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/servers/hadoop-2.6.0-cdh5.14.0/etc/hadoop</span><br><span class="line"></span><br><span class="line">vim hdfs-site.xml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.hosts<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>/export/servers/hadoop-2.6.0-cdh5.14.0/etc/hadoop/dfs.hosts<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>dfs.hosts属性的意义：命名一个文件，其中包含允许连接到namenode的主机列表。必须指定文件的完整路径名。如果该值为空，则允许所有主机。相当于一个白名单，也可以不配置。</p>
+</blockquote>
+</li>
+<li><p>在新的机器上单独启动datanode</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop-daemon.sh start datanode</span><br></pre></td></tr></table></figure>
+
+<p>刷新页面就可以看到新的节点加入进来了</p>
+</li>
+</ol>
+<h5 id="datanode负载均衡服务"><a href="#datanode负载均衡服务" class="headerlink" title="datanode负载均衡服务"></a>datanode负载均衡服务</h5><p>新加入的节点，没有数据块的存储，使得集群整体来看负载还不均衡。因此最后还需要对hdfs负载设置均衡，因为默认的数据传输带宽比较低，可以设置为64M，即</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfsadmin -setBalancerBandwidth 67108864</span><br></pre></td></tr></table></figure>
+
+<p>默认balancer的threshold为10%，即各个节点与集群总的存储使用率相差不超过10%，我们可将其设置为5%。然后启动Balancer，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sbin/start-balancer.sh -threshold 5</span><br></pre></td></tr></table></figure>
+
+<p>等待集群自均衡完成即可。</p>
+<h5 id="添加nodemanager"><a href="#添加nodemanager" class="headerlink" title="添加nodemanager"></a>添加nodemanager</h5><p>在新的机器上单独启动nodemanager：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure>
+
+<p>在web页面确认是否成功启用</p>
+<p>在ResourceManager，通过<code>yarn node -list</code>查看集群情况</p>
+<h4 id="动态缩容"><a href="#动态缩容" class="headerlink" title="动态缩容"></a>动态缩容</h4><h5 id="添加退役节点"><a href="#添加退役节点" class="headerlink" title="添加退役节点"></a>添加退役节点</h5><p>在namenode所在服务器的hadoop配置目录etc&#x2F;hadoop下创建dfs.hosts.exclude文件，并添加需要退役的主机名称。</p>
+<p>注意：该文件当中一定要写真正的主机名或者ip地址都行，不能写node-4</p>
+<p><strong>node04.hadoop.com</strong></p>
+<p>在namenode机器的hdfs-site.xml配置文件中增加dfs.hosts.exclude属性</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/servers/hadoop-2.6.0-cdh5.14.0/etc/hadoop</span><br><span class="line"></span><br><span class="line">vim hdfs-site.xml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.hosts.exclude<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>/export/servers/hadoop-2.6.0-cdh5.14.0/etc/hadoop/dfs.hosts.exclude<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>dfs.hosts.exclude属性的意义：命名一个文件，其中包含不允许连接到namenode的主机列表。必须指定文件的完整路径名。如果值为空，则不排除任何主机。</p>
+</blockquote>
+<h5 id="刷新集群"><a href="#刷新集群" class="headerlink" title="刷新集群"></a>刷新集群</h5><p>在namenode所在的机器执行以下命令，刷新namenode，刷新resourceManager。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfsadmin -refreshNodes</span><br><span class="line"></span><br><span class="line">yarn rmadmin –refreshNodes</span><br></pre></td></tr></table></figure>
+
+<p>等待退役节点状态为decommissioned（所有块已经复制完成），停止该节点及节点资源管理器。注意：如果副本数是3，服役的节点小于等于3，是不能退役成功的，需要修改副本数后才能退役。</p>
+<p>node-4执行以下命令，停止该节点进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /export/servers/hadoop-2.6.0-cdh5.14.0</span><br><span class="line"></span><br><span class="line">sbin/hadoop-daemon.sh stop datanode</span><br><span class="line"></span><br><span class="line">sbin/yarn-daemon.sh stop nodemanager</span><br></pre></td></tr></table></figure>
+
+<p>namenode所在节点执行以下命令刷新namenode和resourceManager</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfsadmin –refreshNodes</span><br><span class="line"></span><br><span class="line">yarn rmadmin –refreshNodes</span><br></pre></td></tr></table></figure>
+
+<p>namenode所在节点执行以下命令进行均衡负载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/servers/hadoop-2.6.0-cdh5.14.0/</span><br><span class="line"></span><br><span class="line">sbin/start-balancer.sh</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><p><img src="https://s2.loli.net/2023/03/27/PsJhdf4z8QbwHBx.png" alt="MapReduce执行总流程概览"></p>
+<h4 id="分片、格式化"><a href="#分片、格式化" class="headerlink" title="分片、格式化"></a>分片、格式化</h4><p>输入 Map 阶段的数据源，必须经过分片和格式化操作。</p>
+<p><strong>分片</strong>：指的是将源文件划分为大小相等的小数据块( Hadoop 2.x 中默认 128MB )，也就是分片( split )，Hadoop 会为每一个分片构建一个 Map 任务，并由该任务运行自定义的 <code>map()</code> 函数，从而处理分片里的每一条记录;<br><strong>格式化</strong>：将划分好的分片( split )格式化为键值对<code>&lt;key,value&gt;</code>形式的数据，其中， key 代表偏移量， value 代表每一行内容。</p>
+<h4 id="执行MapTask"><a href="#执行MapTask" class="headerlink" title="执行MapTask"></a>执行MapTask</h4><p><img src="https://s2.loli.net/2023/03/27/mSRpNyukFOwLD1n.png" alt="MapTask工作机制"></p>
+<ol>
+<li><strong>Read</strong> 阶段： MapTask 通过用户编写的 RecordReader ，从输入的 InputSplit 中解析出一个个 key &#x2F; value 。</li>
+<li><strong>Map</strong> 阶段：将解析出的 key &#x2F; value 交给用户编写的 Map ()函数处理，并产生一系列新的 key &#x2F; value 。</li>
+<li><strong>Collect</strong> 阶段：在用户编写的 map() 函数中，数据处理完成后，一般会调用 outputCollector.collect() 输出结果，在该函数内部，它会将生成的 key &#x2F; value 分片(通过调用 partitioner )，并写入一个环形内存缓冲区中(该缓冲区默认大小是 100MB )。</li>
+<li><strong>Spill</strong> 阶段：即“溢写”，当缓冲区快要溢出时(默认达到缓冲区大小的 80 %)，会在本地文件系统创建一个溢出文件，将该缓冲区的数据写入这个文件。</li>
+</ol>
+<blockquote>
+<p>将数据写入本地磁盘前，先要对数据进行一次本地排序，并在必要时对数据进行合并、压缩等操作。</p>
+<p>写入磁盘之前，线程会根据 ReduceTask 的数量，将数据分区，一个 Reduce 任务对应一个分区的数据。</p>
+<p>这样做的目的是为了避免有些 Reduce 任务分配到大量数据，而有些 Reduce 任务分到很少的数据，甚至没有分到数据的尴尬局面。</p>
+<p>如果此时设置了 Combiner ，将排序后的结果进行 Combine 操作，这样做的目的是尽可能少地执行数据写入磁盘的操作。</p>
+</blockquote>
+<ol start="5">
+<li><strong>Combine</strong> 阶段：当所有数据处理完成以后， MapTask 会对所有临时文件进行一次合并，以确保最终只会生成一个数据文件</li>
+</ol>
+<blockquote>
+<p>合并的过程中会不断地进行排序和 Combine 操作，其目的有两个：一是尽量减少每次写人磁盘的数据量;二是尽量减少下一复制阶段网络传输的数据量。最后合并成了一个已分区且已排序的文件。</p>
+</blockquote>
+<h4 id="执行shuffle"><a href="#执行shuffle" class="headerlink" title="执行shuffle"></a>执行shuffle</h4><p><img src="https://s2.loli.net/2023/03/27/69alzX4u5Mn1cBL.png" alt="1582129765528"></p>
+<ul>
+<li><p>每一个Mapper进程都有一个环形的内存缓冲区，用来存储Map的输出数据，这个内存缓冲区的默认大小是100MB，当数据达到阙值0.8，也就是80MB的时候，一个后台的程序就会把数据溢写到磁盘中。在将数据溢写到磁盘的过程中要经过复杂的过程，首先要将数据进行分区排序（按照分区号如0，1,2），分区完以后为了避免Map输出数据的内存溢出，可以将Map的输出数据分为各个小文件再进行分区，这样map的输出数据就会被分为了具有多个小文件的分区已排序过的数据。然后将各个小文件分区数据进行合并成为一个大的文件（将各个小文件中分区号相同的进行合并）。</p>
+</li>
+<li><p>这个时候Reducer启动了三个分别为0,1,2。0号Reducer会取得0号分区 的数据；1号Reducer会取得1号分区的数据；2号Reducer会取得2号分区的数据。</p>
+</li>
+</ul>
+<h4 id="执行ReduceTask"><a href="#执行ReduceTask" class="headerlink" title="执行ReduceTask"></a>执行ReduceTask</h4><p><img src="https://s2.loli.net/2023/03/27/XWenGVJ2RpaMKzN.png" alt="ReduceTask工作机制"></p>
+<ol>
+<li><strong>Copy</strong> 阶段： Reduce 会从各个 MapTask 上远程复制一片数据（每个 MapTask 传来的数据都是有序的），并针对某一片数据，如果其大小超过一定國值，则写到磁盘上，否则直接放到内存中</li>
+<li><strong>Merge</strong> 阶段：在远程复制数据的同时， ReduceTask 会启动两个后台线程，分别对内存和磁盘上的文件进行合并，以防止内存使用过多或者磁盘文件过多。</li>
+<li><strong>Sort</strong> 阶段：用户编写 reduce() 方法输入数据是按 key 进行聚集的一组数据。</li>
+</ol>
+<blockquote>
+<p>为了将 key 相同的数据聚在一起， Hadoop 采用了基于排序的策略。由于各个 MapTask 已经实现对自己的处理结果进行了局部排序，因此， ReduceTask 只需对所有数据进行一次归并排序即可。</p>
+</blockquote>
+<ol start="4">
+<li><strong>Reduce</strong> 阶段：对排序后的键值对调用 reduce() 方法，键相等的键值对调用一次 reduce()方法，每次调用会产生零个或者多个键值对，最后把这些输出的键值对写入到 HDFS 中</li>
+<li><strong>Write</strong> 阶段： reduce() 函数将计算结果写到 HDFS 上。</li>
+</ol>
+<blockquote>
+<p>合并的过程中会产生许多的中间文件(写入磁盘了)，但 MapReduce 会让写入磁盘的数据尽可能地少，并且最后一次合并的结果并没有写入磁盘，而是直接输入到 Reduce 函数。</p>
+</blockquote>
+<h3 id="combiner"><a href="#combiner" class="headerlink" title="combiner"></a>combiner</h3><h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><img src="https://s2.loli.net/2023/03/27/RvnjuKhrNe4Fp6O.png" alt="combiner" style="zoom: 80%;" />
+
+<ol>
+<li><p>Combiner的意义就是对每一个maptask的输出进行局部汇总，以减小网络传输量。</p>
+</li>
+<li><p>Combiner能够应用的前提是不能影响最终的业务逻辑，而且，Combiner的输出kv应该跟reducer的输入kv类型要对应起来。</p>
+</li>
+<li><p>Combiner和reducer的区别在于运行的位置:</p>
+<p>Combiner是在每一个maptask所在的节点运行;</p>
+<p>​	 Reducer是接收全局所有Mapper的输出结果。</p>
+</li>
+</ol>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><p>自定义Combiner：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyCombiner</span> <span class="keyword">extends</span>  <span class="title class_">Reducer</span>&lt;Text, LongWritable, Text, LongWritable&gt; &#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">reduce</span><span class="params">(</span></span><br><span class="line"><span class="params">                Text key, Iterable&lt;LongWritable&gt; values,Context context)</span><span class="keyword">throws</span> IOException, InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">            <span class="type">long</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line">            <span class="keyword">for</span> (LongWritable value : values) &#123;</span><br><span class="line">                count += value.get();</span><br><span class="line">            &#125;</span><br><span class="line">            context.write(key, <span class="keyword">new</span> <span class="title class_">LongWritable</span>(count));</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在主类中添加：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Combiner设置</span><br><span class="line">    <span class="comment">// 设置Map规约Combiner</span></span><br><span class="line">    job.setCombinerClass(MyCombiner.class);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="partitioner"><a href="#partitioner" class="headerlink" title="partitioner"></a>partitioner</h3><p>在进行MapReduce计算时，有时候需要把最终的输出数据分到不同的文件中，比如按照省份划分的话，需要把同一省份的数据放到一个文件中；按照性别划分的话，需要把同一性别的数据放到一个文件中。负责实现划分数据的类称作Partitioner。</p>
+<h4 id="HashPartitioner（默认）"><a href="#HashPartitioner（默认）" class="headerlink" title="HashPartitioner（默认）"></a>HashPartitioner（默认）</h4><p>源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.apache.hadoop.mapreduce.lib.partition;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Partitioner;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Partition keys by their &#123;<span class="doctag">@link</span> Object#hashCode()&#125;. */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HashPartitioner</span>&lt;K, V&gt; <span class="keyword">extends</span> <span class="title class_">Partitioner</span>&lt;K, V&gt; &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Use &#123;<span class="doctag">@link</span> Object#hashCode()&#125; to partition. */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getPartition</span><span class="params">(K key, V value,</span></span><br><span class="line"><span class="params">                          <span class="type">int</span> numReduceTasks)</span> &#123;</span><br><span class="line">    <span class="comment">//默认使用key的hash值与上int的最大值，避免出现数据溢出 的情况</span></span><br><span class="line">    <span class="keyword">return</span> (key.hashCode() &amp; Integer.MAX_VALUE) % numReduceTasks;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>key、value分别指的是Mapper任务的输出，numReduceTasks指的是设置的Reducer任务数量，默认值是1。那么任何整数与1相除的余数肯定是0。也就是说getPartition(…)方法的返回值总是0。也就是Mapper任务的输出总是送给一个Reducer任务，最终只能输出到一个文件中。</p>
+<h4 id="自定义Partitioner"><a href="#自定义Partitioner" class="headerlink" title="自定义Partitioner"></a>自定义Partitioner</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.IntWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Partitioner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FivePartitioner</span> <span class="keyword">extends</span> <span class="title class_">Partitioner</span>&lt;IntWritable, IntWritable&gt;&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 我们的需求：按照能否被5除尽去分区</span></span><br><span class="line"><span class="comment">     * 1、如果除以5的余数是0，  放在0号分区</span></span><br><span class="line"><span class="comment">     * 2、如果除以5的余数不是0，  放在1分区</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getPartition</span><span class="params">(IntWritable key, IntWritable value, <span class="type">int</span> numPartitions)</span> &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">intValue</span> <span class="operator">=</span> key.get();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(intValue % <span class="number">5</span> == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再在主函数里加入如下两行代码即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">job.setPartitionerClass(FivePartitioner.class);</span><br><span class="line">job.setNumReduceTasks(<span class="number">2</span>);<span class="comment">//设置为2</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="序列化和反序列化"><a href="#序列化和反序列化" class="headerlink" title="序列化和反序列化"></a>序列化和反序列化</h3><p>Java的序列化是一个重量级序列化框架（<code>Serializable</code>），一个对象被序列化后，会附带很多额外的信息（各种校验信息，header，继承体系等），不便于在网络中高效传输。所以，hadoop自己开发了一套序列化机制（<code>Writable</code>），精简、高效。<br>自定义bean对象要想序列化传输步骤及注意事项：<br>  （1）必须实现<code>Writable</code>接口<br>  （2）反序列化时，需要反射调用空参构造函数，所以必须有空参构造<br>  （3）重写序列化方法<br>  （4）重写反序列化方法<br>  （5）注意反序列化的顺序和序列化的顺序完全一致<br>  （6）要想把结果显示在文件中，需要重写<code>toString()</code>，且用”\t”分开，方便后续用<br>  （7）如果需要将自定义的bean放在key中传输，则还需要实现<code>comparable</code>接口，因为mapreduce框中的shuffle过程一定会对key进行排序</p>
+<h3 id="InputSplit"><a href="#InputSplit" class="headerlink" title="InputSplit"></a>InputSplit</h3><p>FileInputFormat源码解析(<code>input.getSplits(job)</code>)<br>（1）找到你数据存储的目录。<br>（2）开始遍历处理（规划切片）目录下的每一个文件。<br>（3）遍历第一个文件ss.txt。<br>  a）获取文件大小<code>fs.sizeOf(ss.txt)</code>;。<br>  b）计算切片大小</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">computeSliteSize(Math.max(minSize,Math.min(maxSize,blocksize)))=blocksize=128M</span><br></pre></td></tr></table></figure>
+
+<p>  c）<strong>默认情况下，切片大小&#x3D;blocksize</strong>。<br>  d）开始切，形成第1个切片：ss.txt—0:128M 第2个切片ss.txt—128:256M 第3个切片ss.txt—256M:300M（每次切片时，都要判断切完剩下的部分是否大于块的1.1倍，<strong>不大于1.1倍就划分一块切片</strong>）。<br>  e）将切片信息写到一个切片规划文件中。<br>  f）整个切片的核心过程在<code>getSplit()</code>方法中完成。<br>  g）数据切片只是在逻辑上对输入数据进行分片，并不会再磁盘上将其切分成分片进行存储。InputSplit只记录了分片的元数据信息，比如起始位置、长度以及所在的节点列表等。<br>  h）注意：block是HDFS上物理上存储的存储的数据，切片是对数据逻辑上的划分。<br>（4）<strong>提交切片规划文件到yarn上，yarn上的MrAppMaster就可以根据切片规划文件计算开启maptask个数</strong>。</p>
+<h3 id="一个job的map和reduce的数"><a href="#一个job的map和reduce的数" class="headerlink" title="一个job的map和reduce的数"></a>一个job的map和reduce的数</h3><h4 id="map数量"><a href="#map数量" class="headerlink" title="map数量"></a>map数量</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">splitSize=max&#123;minSize,min&#123;maxSize,blockSize&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由处理的数据分成的block数量决定default_num &#x3D; total_size &#x2F; split_size,即切片个数。</p>
+<h4 id="reduce数量"><a href="#reduce数量" class="headerlink" title="reduce数量"></a>reduce数量</h4><p><code>job.setNumReduceTasks(x)</code>;x 为reduce的数量。不设置的话默认为 1。</p>
+<h3 id="MapReduce中的排序"><a href="#MapReduce中的排序" class="headerlink" title="MapReduce中的排序"></a>MapReduce中的排序</h3><p>部分排序、全排序、辅助排序、二次排序、自定义排序</p>
+<p>发生的阶段：<br>map side：发生在spill后partition前。<br>reduce side：发生在copy后 reduce前。</p>
+<h3 id="缓存机制（Distributedcache）"><a href="#缓存机制（Distributedcache）" class="headerlink" title="缓存机制（Distributedcache）"></a>缓存机制（Distributedcache）</h3><p>在进行join操作的时候，如果一个表很大，另一个表很小，我们就可以将这个小表进行广播处理，即每个计算节点上都存一份，然后进行map端的连接操作</p>
+<h3 id="MapReduce无法提速的场景"><a href="#MapReduce无法提速的场景" class="headerlink" title="MapReduce无法提速的场景"></a>MapReduce无法提速的场景</h3><p>数据量很小。<br>繁杂的小文件。<br>索引是更好的存取机制的时候。<br>事务处理。<br>只有一台机器的时候。</p>
+<h3 id="实现-TopN"><a href="#实现-TopN" class="headerlink" title="实现 TopN"></a>实现 TopN</h3><p>可以自定义groupingcomparator，对结果进行最大值排序，然后再reduce输出时，控制只输出前n个数。就达到了topn输出的目的。</p>
+<h3 id="实现wordcount"><a href="#实现wordcount" class="headerlink" title="实现wordcount"></a>实现wordcount</h3><p>定义一个mapper类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先要定义四个泛型的类型</span></span><br><span class="line"><span class="comment">//keyin:  LongWritable    valuein: Text</span></span><br><span class="line"><span class="comment">//keyout: Text            valueout:IntWritable</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WordCountMapper</span> <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;LongWritable, Text, Text, IntWritable&gt;&#123;</span><br><span class="line">	<span class="comment">//map方法的生命周期：  框架每传一行数据就被调用一次</span></span><br><span class="line">	<span class="comment">//key :  这一行的起始点在文件中的偏移量</span></span><br><span class="line">	<span class="comment">//value: 这一行的内容</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">map</span><span class="params">(LongWritable key, Text value, Context context)</span> <span class="keyword">throws</span> IOException, InterruptedException &#123;</span><br><span class="line">		<span class="comment">//拿到一行数据转换为string</span></span><br><span class="line">		<span class="type">String</span> <span class="variable">line</span> <span class="operator">=</span> value.toString();</span><br><span class="line">		<span class="comment">//将这一行切分出各个单词</span></span><br><span class="line">		String[] words = line.split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">		<span class="comment">//遍历数组，输出&lt;单词，1&gt;</span></span><br><span class="line">		<span class="keyword">for</span>(String word:words)&#123;</span><br><span class="line">			context.write(<span class="keyword">new</span> <span class="title class_">Text</span>(word), <span class="keyword">new</span> <span class="title class_">IntWritable</span>(<span class="number">1</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义一个reducer类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//生命周期：框架每传递进来一个kv 组，reduce方法被调用一次  </span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">reduce</span><span class="params">(Text key, Iterable&lt;IntWritable&gt; values, Context context)</span> <span class="keyword">throws</span> IOException, InterruptedException &#123;</span><br><span class="line">		<span class="comment">//定义一个计数器</span></span><br><span class="line">		<span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">		<span class="comment">//遍历这一组kv的所有v，累加到count中</span></span><br><span class="line">		<span class="keyword">for</span>(IntWritable value:values)&#123;</span><br><span class="line">			count += value.get();</span><br><span class="line">		&#125;</span><br><span class="line">		context.write(key, <span class="keyword">new</span> <span class="title class_">IntWritable</span>(count));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义一个主类，用来描述job并提交job</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WordCountRunner</span> &#123;</span><br><span class="line">	<span class="comment">//把业务逻辑相关的信息（哪个是mapper，哪个是reducer，要处理的数据在哪里，输出的结果放哪里……）描述成一个job对象</span></span><br><span class="line">	<span class="comment">//把这个描述好的job提交给集群去运行</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">		<span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">		<span class="type">Job</span> <span class="variable">wcjob</span> <span class="operator">=</span> Job.getInstance(conf);</span><br><span class="line">		<span class="comment">//指定我这个job所在的jar包</span></span><br><span class="line"><span class="comment">//		wcjob.setJar(&quot;/home/hadoop/wordcount.jar&quot;);</span></span><br><span class="line">		wcjob.setJarByClass(WordCountRunner.class);</span><br><span class="line">		</span><br><span class="line">		wcjob.setMapperClass(WordCountMapper.class);</span><br><span class="line">		wcjob.setReducerClass(WordCountReducer.class);</span><br><span class="line">		<span class="comment">//设置我们的业务逻辑Mapper类的输出key和value的数据类型</span></span><br><span class="line">		wcjob.setMapOutputKeyClass(Text.class);</span><br><span class="line">		wcjob.setMapOutputValueClass(IntWritable.class);</span><br><span class="line">		<span class="comment">//设置我们的业务逻辑Reducer类的输出key和value的数据类型</span></span><br><span class="line">		wcjob.setOutputKeyClass(Text.class);</span><br><span class="line">		wcjob.setOutputValueClass(IntWritable.class);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//指定要处理的数据所在的位置</span></span><br><span class="line">		FileInputFormat.setInputPaths(wcjob, <span class="string">&quot;hdfs://hdp-server01:9000/wordcount/data/big.txt&quot;</span>);</span><br><span class="line">		<span class="comment">//指定处理完成之后的结果所保存的位置</span></span><br><span class="line">		FileOutputFormat.setOutputPath(wcjob, <span class="keyword">new</span> <span class="title class_">Path</span>(<span class="string">&quot;hdfs://hdp-server01:9000/wordcount/output/&quot;</span>));</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//向yarn集群提交这个job</span></span><br><span class="line">		<span class="type">boolean</span> <span class="variable">res</span> <span class="operator">=</span> wcjob.waitForCompletion(<span class="literal">true</span>);</span><br><span class="line">		System.exit(res?<span class="number">0</span>:<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="执行MapReduce常见的问题"><a href="#执行MapReduce常见的问题" class="headerlink" title="执行MapReduce常见的问题"></a>执行MapReduce常见的问题</h3><ul>
+<li>client对集群中HDFS的操作没有权限</li>
+</ul>
+<p>在集群配置文件hdfs-site.xml，然后重启</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.permissions<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>mapreduce的输出路径已存在，必须先删除掉那个路径</p>
+</li>
+<li><p>提交集群运行，运行失败</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">job.setJar(<span class="string">&quot;/home/hadoop/wordcount.jar&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>日志打不出来，报警告信息</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">log4j:WARN No appenders could be found <span class="keyword">for</span> logger (org<span class="variable">.apache</span><span class="variable">.hadoop</span><span class="variable">.metrics2</span><span class="variable">.lib</span><span class="variable">.MutableMetricsFactory</span>).  </span><br><span class="line">log4j:WARN Please initialize the log4j system properly.  </span><br><span class="line">log4j:WARN See http:<span class="comment">//logging.apache.org/log4j/1.2/faq.html#noconfig for more info.  </span></span><br></pre></td></tr></table></figure>
+
+<p>需要在项目的src下面新建file名为log4j.properties的文件</p>
+<h2 id="yarn"><a href="#yarn" class="headerlink" title="yarn"></a>yarn</h2><h3 id="yarn三大组件"><a href="#yarn三大组件" class="headerlink" title="yarn三大组件"></a>yarn三大组件</h3><p>ResourceManager负责所有资源的监控、分配和管理；</p>
+<p>ApplicationMaster负责每一个具体应用程序的调度和协调；</p>
+<p>NodeManager负责每一个节点的维护。</p>
+<h3 id="MapReduce程序在yarn上的执行流程"><a href="#MapReduce程序在yarn上的执行流程" class="headerlink" title="MapReduce程序在yarn上的执行流程"></a>MapReduce程序在yarn上的执行流程</h3><p>Hadoop jar xxx.jar </p>
+<img src="https://s2.loli.net/2023/03/27/Bfo4hTdiAz7FPjc.png" alt="MapReduce程序在yarn上的执行流程" style="zoom:50%;" />
+
+<ol>
+<li>客户端向集群提交一个任务，该任务首先到ResourceManager中的ApplicationManager;</li>
+<li>ApplicationManager收到任务之后，会在集群中找一个NodeManager，并在该NodeManager所在DataNode上启动一个AppMaster进程，该进程用于进行任务的划分和任务的监控；</li>
+<li>AppMaster启动起来之后，会向ResourceManager中的ApplicationManager注册其信息（目的是与之通信）；</li>
+<li>AppMaster向ResourceManager下的ResourceScheduler申请计算任务所需的资源；</li>
+<li>AppMaster申请到资源之后，会与所有的NodeManager通信要求它们启动计算任务所需的任务（Map和Reduce）；</li>
+<li>各个NodeManager启动对应的容器用来执行Map和Reduce任务；</li>
+<li>各个任务会向AppMaster汇报自己的执行进度和执行状况，以便让AppMaster随时掌握各个任务的运行状态，在某个任务出了问题之后重启执行该任务；</li>
+<li>在任务执行完之后，AppMaster向ApplicationManager汇报，以便让ApplicationManager注销并关闭自己，使得资源得以回收；</li>
+</ol>
+<h3 id="调度器（scheduler"><a href="#调度器（scheduler" class="headerlink" title="调度器（scheduler)"></a>调度器（scheduler)</h3><h4 id="FIFO-Scheduler"><a href="#FIFO-Scheduler" class="headerlink" title="FIFO Scheduler"></a>FIFO Scheduler</h4><img src="https://s2.loli.net/2023/03/28/Dqzawrvi4SQkBZA.png" alt="FIFOScheduler" style="zoom:50%;" />
+
+<p>维持一个先入先出队列，按时间顺序执行任务。</p>
+<h4 id="Capacity-Scheduler"><a href="#Capacity-Scheduler" class="headerlink" title="Capacity Scheduler"></a>Capacity Scheduler</h4><img src="https://s2.loli.net/2023/03/28/xjo5U8cCfzFqlYE.png" alt="CapacityScheduler" style="zoom:50%;" />
+
+<p>支持多个队列，每个队列可配置一定的资源量，每个队列采用FIFO调度策略.</p>
+<p>（2.7.2版本默认）</p>
+<p>为了防止同一个用户的作业独占队列中的资源，该调度器会对同一用户提交</p>
+<p>的作业所占资源量进行限定：</p>
+<ul>
+<li>选择队列：计算每个队列中正在运行的任务数与其应该分得的计算资源之间的比</li>
+</ul>
+<p>值，选择一个该比值最小的队列——最闲的。</p>
+<ul>
+<li>选择作业：按照作业优先级和提交时间顺序，同时考虑用户资源量限制和内存限</li>
+</ul>
+<p>制对队列内任务排序。</p>
+<h4 id="Fair-Scheduler"><a href="#Fair-Scheduler" class="headerlink" title="Fair Scheduler"></a>Fair Scheduler</h4><img src="https://s2.loli.net/2023/03/28/OBYQrzbu4hwt251.png" alt="FairScheduler" style="zoom:50%;" />
+
+<p>支持多个队列，每个队列内部按照缺额大小分配资源启动任务，同一时间队列中有多个任务执行。队列的并行度大于等于队列的个数。</p>
+<p>缺额：每个job理想情况下获得的计算资源与实际获得的计算资源存在的差距。</p>
+<h3 id="容错性"><a href="#容错性" class="headerlink" title="容错性"></a>容错性</h3><h4 id="MRAppMaster容错性"><a href="#MRAppMaster容错性" class="headerlink" title="MRAppMaster容错性"></a>MRAppMaster容错性</h4><p>  一旦运行失败，由YARN的ResourceManager负责重新启动，最多重启次数可由用户设置，默认是2次。一旦超过最高重启次数，则作业运行失败。</p>
+<h4 id="Map-Task-x2F-Reduce容错性"><a href="#Map-Task-x2F-Reduce容错性" class="headerlink" title="Map Task&#x2F;Reduce容错性"></a>Map Task&#x2F;Reduce容错性</h4><p>  Task Task周期性向MRAppMaster汇报心跳；一旦Task挂掉，则MRAppMaster将为之重新申请资源，并运行之。最多重新运行次数可由用户设置，默认4次。</p>
+<h2 id="数据压缩算法"><a href="#数据压缩算法" class="headerlink" title="数据压缩算法"></a>数据压缩算法</h2><p>常用的压缩算法有<strong>bzip2、gzip、lzo、snappy</strong>，其中lzo、snappy需要操作系统安装native库才可以支持。</p>
+<p> 一般用Snappy，特点速度快，缺点无法切分（可以回答在链式 MR 中，Reduce 端输出使用 bzip2 压缩，以便后续的 map 任务对数据进行 split）</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><h3 id="MapReduce跑得慢的原因"><a href="#MapReduce跑得慢的原因" class="headerlink" title="MapReduce跑得慢的原因"></a>MapReduce跑得慢的原因</h3><ul>
+<li>计算机性能<br>CPU、内存、磁盘健康、网络</li>
+<li>I&#x2F;O 操作优化<br>（1）数据倾斜<br>    （2）map和reduce数设置不合理<br>    （3）reduce等待过久<br>    （4）小文件过多<br>    （5）大量的不可分块的超大文件<br>    （6）spill次数过多<br>    （7）merge次数过多等</li>
+</ul>
+<h3 id="MapReduce优化方法"><a href="#MapReduce优化方法" class="headerlink" title="MapReduce优化方法"></a>MapReduce优化方法</h3><h4 id="数据输入"><a href="#数据输入" class="headerlink" title="数据输入"></a>数据输入</h4><ul>
+<li><p>合并小文件：</p>
+<p>在执行mr任务前将小文件进行合并，大量的小文件会产生大量的map任务，增大map任务装载次数，而任务的装载比较耗时，从而导致mr运行较慢。</p>
+<p>（Hadoop Archive、Sequence file、CombineFileInputFormat）</p>
+</li>
+<li><p>采用ConbinFileInputFormat来作为输入，解决输入端大量小文件场景。</p>
+</li>
+</ul>
+<h4 id="map阶段"><a href="#map阶段" class="headerlink" title="map阶段"></a>map阶段</h4><ul>
+<li><p>减少spill次数：</p>
+<p>通过调整io.sort.mb及sort.spill.percent参数值，增大触发spill的内存上限，减少spill次数，从而减少磁盘 IO。</p>
+</li>
+<li><p>减少merge次数：</p>
+<p>通过调整io.sort.factor参数，增大merge的文件数目，减少merge的次数，从而缩短mr处理时间。</p>
+</li>
+<li><p>在 map 之后先进行combine处理，减少I&#x2F;O。</p>
+</li>
+</ul>
+<h4 id="reduce阶段"><a href="#reduce阶段" class="headerlink" title="reduce阶段"></a>reduce阶段</h4><ul>
+<li><p>合理设置map和reduce数：</p>
+<p>两个都不能设置太少，也不能设置太多。太少，会导致task等待，延长处理时间；太多，会导致 map、reduce任务间竞争资源，造成处理超时等错误。</p>
+</li>
+<li><p>设置map、reduce共存：</p>
+<p>调整slowstart.completedmaps参数，使map运行到一定程度后，reduce也开始运行，减少reduce的等待时间。</p>
+</li>
+<li><p>规避使用reduce：</p>
+<p>因为Reduce在用于连接数据集的时候将会产生大量的网络消耗。</p>
+</li>
+<li><p>合理设置reduce端的buffer：</p>
+<p>默认情况下，数据达到一个阈值的时候，buffer中的数据就会写入磁盘，然后reduce会从磁盘中获得所有的数据。也就是说，buffer和reduce是没有直接关联的，中间多个一个写磁盘-&gt;读磁盘的过程，既然有这个弊端，那么就可以通过参数来配置，使得buffer中的一部分数据可以直接输送到reduce，从而减少IO开销：mapred.job.reduce.input.buffer.percent，默认为0.0。当值大于0的时候，会保留指定比例的内存读buffer中的数据直接拿给reduce使用。这样一来，设置buffer需要内存，读取数据需要内存，reduce计算也要内存，所以要根据作业的运行情况进行调整。</p>
+</li>
+</ul>
+<h4 id="IO传输"><a href="#IO传输" class="headerlink" title="IO传输"></a>IO传输</h4><ul>
+<li>采用数据压缩的方式，减少网络IO的时间。安装Snappy和LZOP压缩编码器。</li>
+<li>使用SequenceFile二进制文件</li>
+</ul>
+<h4 id="数据倾斜问题"><a href="#数据倾斜问题" class="headerlink" title="数据倾斜问题"></a>数据倾斜问题</h4><ul>
+<li>提前在map 进行 combine，减少传输的数据量</li>
+</ul>
+<p>在 Mapper 加上 combiner 相当于提前进行 reduce，即把一个 Mapper 中的相同 key 进行</p>
+<p>了聚合，减少 shuffle 过程中传输的数据量，以及 Reducer 端的计算量。</p>
+<p>如果导致数据倾斜的 key 大量分布在不同的 mapper 的时候，这种方法就不是很有效了。</p>
+<ul>
+<li>导致数据倾斜的key 大量分布在不同的 mapper</li>
+</ul>
+<p>（1）局部聚合加全局聚合。</p>
+<p>第一次在 map 阶段对那些导致了数据倾斜的 key 加上 1 到 n 的随机前缀，这样本来相</p>
+<p>同的 key 也会被分到多个 Reducer 中进行局部聚合，数量就会大大降低。</p>
+<p>第二次 mapreduce，去掉 key 的随机前缀，进行全局聚合。</p>
+<p>思想：二次 mr，第一次将 key 随机散列到不同 reducer 进行处理达到负载均衡目的。第</p>
+<p>二次再根据去掉 key 的随机前缀，按原 key 进行 reduce 处理。</p>
+<p>这个方法进行两次 mapreduce，性能稍差。</p>
+<p>2）增加 Reducer，提升并行度</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JobConf.setNumReduceTasks(<span class="type">int</span>)</span><br></pre></td></tr></table></figure>
+
+<p>3）实现自定义分区</p>
+<p>根据数据分布情况，自定义散列函数，将 key 均匀分配到不同 Reducer</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>不久之</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"># 大数据</a>
+                    
+                        <a href="/tags/Hadoop/"># Hadoop</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2022/09/14/5.%E6%B5%81/">5.流</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 不久之 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
